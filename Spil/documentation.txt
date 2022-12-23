@@ -1,0 +1,36 @@
+Basic documentation of this project.
+It includes a TODO list and things to figure out.
+
+So the primary objective is to create a game:
+
+games have 3 basic functions:
+
+Init(): to initialize all objects,
+
+then is the loop:
+
+first update()
+second render()
+
+- update is functionality, so collision, movement, shooting, input, ...
+- render is drawing every objct (with updated positions/values) on canvas
+
+///////////////
+
+Our project is in SITE. site will include, main, index, render and shader everything else we will try to sort in files to avoid chaos.
+
+----------------------------------------------------------------------------------
+
+we will start at render (+ init).
+the examples show how to draw a GLTF map but not for specific object.
+I have to figure out how to draw specific objects with GLTF and include physics on them.
+
+there is another way to include phisycs but those nodes i think you have to create manualy and cannot be imported from blender.
+
+after this is all set wi will know how to build the whole map, we will have first person,
+and collision physics. whats left is some bullet system, very simple AI (for spawn moastly).
+
+those scene.js files are very similar to GLTF so i think its posible to apply phisics on them in a way 
+that we first export our object and then give them some modifications withh AABB, ...
+
+
