@@ -1,4 +1,4 @@
-import { quat, vec3, mat4 } from '../../../lib/gl-matrix-module.js';
+import { quat, vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 export class FirstPersonController {
 
@@ -37,6 +37,7 @@ export class FirstPersonController {
         this.pointerSensitivity = 0.002;
 
         this.initHandlers();
+
     }
 
     initHandlers() {
@@ -102,19 +103,35 @@ export class FirstPersonController {
         if (this.keys['KeyA']) {
             vec3.sub(acc, acc, right);
         }
+        if (this.keys['Space'] && this.node.translation[1] <= 1.05) {
+            vec3.add(acc, acc, [0,30,0]);
+        }
+        
+        const gravity = -9.8;
+
 
         // Update velocity based on acceleration (first line of Euler's method).
         vec3.scaleAndAdd(this.velocity, this.velocity, acc, dt * this.acceleration);
+
 
         // If there is no user input, apply decay.
         if (!this.keys['KeyW'] &&
             !this.keys['KeyS'] &&
             !this.keys['KeyD'] &&
-            !this.keys['KeyA'])
+            !this.keys['KeyA']
+            )
         {
             const decay = Math.exp(dt * Math.log(1 - this.decay));
             vec3.scale(this.velocity, this.velocity, decay);
         }
+
+
+        // If in the air, add gravity
+        if (this.node.translation[1] > 1) {
+            vec3.add(this.velocity, this.velocity, [0, gravity*dt, 0]);
+        }
+
+
 
         // Limit speed to prevent accelerating to infinity and beyond.
         const speed = vec3.length(this.velocity);
@@ -122,9 +139,19 @@ export class FirstPersonController {
             vec3.scale(this.velocity, this.velocity, this.maxSpeed / speed);
         }
 
-        // Update translation based on velocity (second line of Euler's method).
-        this.node.translation = vec3.scaleAndAdd(vec3.create(),
-            this.node.translation, this.velocity, dt);
+        var change = vec3.scaleAndAdd(vec3.create(),
+        this.node.translation, this.velocity, dt);
+
+        // if you move and there is no collision with the map change is applied
+        //if (this.node.translation != change && !collision(this.node)) {
+            // Update translation based on velocity (second line of Euler's method).
+            this.node.translation = vec3.scaleAndAdd(vec3.create(),
+                this.node.translation, this.velocity, dt);
+        //}  
+
+        if (this.node.translation[1] < 1) {
+            this.node.translation = [this.node.translation[0], 1, this.node.translation[2]];
+        }        
 
         // Update rotation based on the Euler angles.
         const rotation = quat.create();

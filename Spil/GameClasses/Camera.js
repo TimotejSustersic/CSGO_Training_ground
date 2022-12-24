@@ -1,4 +1,4 @@
-import { quat, vec3, mat4 } from '../../lib/gl-matrix-module.js';
+import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 import { Utils } from './Utils.js';
 import { Node } from './Node.js';
@@ -22,10 +22,9 @@ export class Camera extends Node {
         mat4.perspective(this.projectionMatrix, this.fov, this.aspect, this.near, this.far);
     }
 
-    
     update(dt) {
         const c = this;
-        console.log(this)
+
         const forward = vec3.set(vec3.create(),
             -Math.sin(c.rotation[1]), 0, -Math.cos(c.rotation[1]));
         const right = vec3.set(vec3.create(),
@@ -33,16 +32,15 @@ export class Camera extends Node {
 
         // 1: add movement acceleration
         const acc = vec3.create();
-        //if (this.keys['KeyW']) {=
-            //vec3.add(acc, acc, forward);
-            vec3.add([0,0,0], [0,0,0], [0,0,1]);
-        //}
+        if (this.keys['KeyW']) {
+            vec3.add(acc, acc, forward);
+        }
         if (this.keys['KeyS']) {
             vec3.sub(acc, acc, forward);
         }
-        //if (this.keys['KeyD']) {
+        if (this.keys['KeyD']) {
             vec3.add(acc, acc, right);
-        //}
+        }
         if (this.keys['KeyA']) {
             vec3.sub(acc, acc, right);
         }
@@ -65,80 +63,6 @@ export class Camera extends Node {
             vec3.scale(c.velocity, c.velocity, c.maxSpeed / len);
         }
     }
-    /*
-    update(dt) {
-        // We are essentially solving the system of differential equations
-        //
-        //   a = dv/dt
-        //   v = dx/dt
-        //
-        // where a is acceleration, v is speed and x is translation.
-        // The system can be sufficiently solved with Euler's method:
-        //
-        //   v(t + dt) = v(t) + a(t) * dt
-        //   x(t + dt) = x(t) + v(t) * dt
-        //
-        // which can be implemented as
-        //
-        //   v += a * dt
-        //   x += v * dt
-        //
-        // Needless to say, better methods exist. Specifically, second order
-        // methods accurately compute the solution to our second order system,
-        // whereas there is always going to be some error related to the
-        // exponential decay.
-
-        // Calculate forward and right vectors from the y-orientation.
-        const cos = Math.cos(this.yaw);
-        const sin = Math.sin(this.yaw);
-        const forward = [-sin, 0, -cos];
-        const right = [cos, 0, -sin];
-
-        // Map user input to the acceleration vector.
-        const acc = vec3.create();
-        //if (this.keys['KeyW']) {
-            vec3.add(acc, acc, forward);
-        //}
-        if (this.keys['KeyS']) {
-            vec3.sub(acc, acc, forward);
-        }
-        if (this.keys['KeyD']) {
-            vec3.add(acc, acc, right);
-        }
-        if (this.keys['KeyA']) {
-            vec3.sub(acc, acc, right);
-        }
-
-        // Update velocity based on acceleration (first line of Euler's method).
-        vec3.scaleAndAdd(this.velocity, this.velocity, acc, dt * this.acceleration);
-
-        // If there is no user input, apply decay.
-        if (!this.keys['KeyW'] &&
-            !this.keys['KeyS'] &&
-            !this.keys['KeyD'] &&
-            !this.keys['KeyA'])
-        {
-            const decay = Math.exp(dt * Math.log(1 - this.decay));
-            vec3.scale(this.velocity, this.velocity, decay);
-        }
-
-        // Limit speed to prevent accelerating to infinity and beyond.
-        const speed = vec3.length(this.velocity);
-        if (speed > this.maxSpeed) {
-            vec3.scale(this.velocity, this.velocity, this.maxSpeed / speed);
-        }
-
-        // Update translation based on velocity (second line of Euler's method).
-        this.translation = vec3.scaleAndAdd(vec3.create(),
-            this.translation, this.velocity, dt);
-
-        // Update rotation based on the Euler angles.
-        const rotation = quat.create();
-        quat.rotateY(rotation, rotation, this.yaw);
-        quat.rotateX(rotation, rotation, this.pitch);
-        this.rotation = rotation;
-    }
-*/
 
     enable() {
         document.addEventListener('pointermove', this.pointermoveHandler);

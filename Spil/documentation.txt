@@ -34,3 +34,16 @@ those scene.js files are very similar to GLTF so i think its posible to apply ph
 that we first export our object and then give them some modifications withh AABB, ...
 
 
+GLTF:
+
+torej ce dodas se custom properties dobis tud min max ampak ne vem kako jih povezes na posamezen node
+
+mogoc smo narobe tole gledal.
+razlika zakaj ne dela je ker mamo 17 exmaple node pa camero, gltf ma pa node in eden izmed njih ma se posebno spemeenljivko za kamero in tista camera pol ne more preminjat lastnosti svojga starsa.
+tak da resitev bomo naredil tako kot je ze premikanje resen. 
+clasu za first person bomo dal zanko za vse objekte in ce obstaja collision je acceleration = 0 oz pogledamo ce bi se posodobljena matrika sekala z objektom.
+
+za ostale node pa bo verjetn poseben Physics class narjen.
+
+pri fiziki so nodi drgac sestavljeni tuki je pa gltf i ne mores kr tko rec kaj je normalTexCoordzato bom node sestavu tko da je node z temi translacijami ipd. 
+pol ma pa se en object parameter kjer ma se dodatne stvari notr k jih za node rabs kokr so camera al pa speed all pa collision borders.

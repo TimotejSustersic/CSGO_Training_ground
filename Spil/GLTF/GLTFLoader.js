@@ -308,7 +308,7 @@ export class GLTFLoader {
             return this.cache.get(gltfSpec);
         }
 
-        const options = { ...gltfSpec, children: [] };
+        const options = { ...gltfSpec, children: [], extraParams: {} };
         if (gltfSpec.children) {
             for (const nodeIndex of gltfSpec.children) {
                 const node = await this.loadNode(nodeIndex);
@@ -320,6 +320,13 @@ export class GLTFLoader {
         }
         if (gltfSpec.mesh !== undefined) {
             options.mesh = await this.loadMesh(gltfSpec.mesh);
+        }
+        if (gltfSpec.min !== undefined && gltfSpec.max !== undefined) {
+            options.extraParams.min = gltfSpec.min;
+            options.extraParams.max = gltfSpec.max;
+        }
+        if (gltfSpec.velocity !== undefined) {
+            options.extraParams.velocity = gltfSpec.velocity;
         }
 
         const node = new Node(options);

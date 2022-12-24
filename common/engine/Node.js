@@ -29,11 +29,27 @@ export class Node {
         this.camera = options.camera ?? null;
         this.mesh = options.mesh ?? null;
 
+        this.extraParams = options.extraParams ?? null;
+
         this.children = [...(options.children ?? [])];
         for (const child of this.children) {
             child.parent = this;
         }
         this.parent = null;
+
+        ///collision parameters
+        //this.localMatrix = mat4.create();
+        //this.updateMatrix();
+    }
+
+    // collision
+    updateMatrix() {
+        const m = this.localMatrix;
+        const degrees = this.rotation.map(x => x * 180 / Math.PI);
+        const q = quat.fromEuler(quat.create(), ...degrees);
+        const v = vec3.clone(this._translation);
+        const s = vec3.clone(this._scale);
+        mat4.fromRotationTranslationScale(m, q, v, s);
     }
 
     updateTransformationComponents() {

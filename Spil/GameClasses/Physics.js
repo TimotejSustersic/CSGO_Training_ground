@@ -8,17 +8,25 @@ export class Physics {
 
     update(dt) {
         this.scene.traverse(node => {
+            
             // Move every node with defined velocity.
-            if (node.velocity) {
-                vec3.scaleAndAdd(node.translation, node.translation, node.velocity, dt);
-                node.updateMatrix();
+            if (node.extraParams) {
+                if (node.extraParams.velocity) {
 
-                // After moving, check for collision with every other node.
-                this.scene.traverse(other => {
-                    if (node !== other) {
-                        this.resolveCollision(node, other);
-                    }
-                });
+                    console.log(node)
+                    
+                    vec3.scaleAndAdd(node.translation, node.translation, node.extraParams.velocity, dt);
+                    //node.updateMatrix();
+
+                    // After moving, check for collision with every other node.
+                    this.scene.traverse(other => {
+                        if (node !== other 
+                            && node.extraParams.min !== undefined && node.extraParams.max !== undefined 
+                            && other.extraParams.min !== undefined && other.extraParams.max !== undefined) {
+                            this.resolveCollision(node, other);
+                        }
+                    });
+                }
             }
         });
     }
@@ -34,9 +42,11 @@ export class Physics {
     }
 
     getTransformedAABB(node) {
+
         // Transform all vertices of the AABB from local to global space.
-        const transform = node.getGlobalMatrix();
-        const { min, max } = node.aabb;
+        var transform = node.globalMatrix;
+        const min = node.extraParams.min;
+        const max = node.extraParams.max;
         const vertices = [
             [min[0], min[1], min[2]],
             [min[0], min[1], max[2]],
@@ -64,6 +74,7 @@ export class Physics {
 
         // Check if there is collision.
         const isColliding = this.aabbIntersection(aBox, bBox);
+        console.log(isColliding)
         if (!isColliding) {
             return;
         }
