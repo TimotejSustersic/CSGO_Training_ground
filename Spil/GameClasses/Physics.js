@@ -7,13 +7,15 @@ export class Physics {
     }
 
     update(dt) {
+        
+        // obect collision
         this.scene.traverse(node => {
             
             // Move every node with defined velocity.
             if (node.extraParams) {
                 if (node.extraParams.velocity) {
                     
-                    vec3.scaleAndAdd(node.translation, node.translation, node.extraParams.velocity, dt);
+                    //vec3.scaleAndAdd(node._translation, node._translation, node.extraParams.velocity, dt);
                     //node.updateMatrix();
 
                     // After moving, check for collision with every other node.

@@ -1,14 +1,20 @@
 import { quat, vec3, mat4 } from '../../lib/gl-matrix-module.js';
+import { Magazine } from './Magazine.js';
 
 export class FirstPersonController {
 
-    constructor(node, domElement) {
+    constructor(node, domElement, scene) {
         // The node that this controller controls.
         this.node = node;
 
+        // get scene
+        this.scene = scene;
+
+        this.magazine = new Magazine(scene);
+
         // The activation DOM element.
         this.domElement = domElement;
-
+        
         // This map is going to hold the pressed state for every key.
         this.keys = {};
 
@@ -106,13 +112,22 @@ export class FirstPersonController {
         if (this.keys['Space'] && this.node.translation[1] <= 1.05) {
             vec3.add(acc, acc, [0,30,0]);
         }
+        if (this.keys['KeyR']) {
+            console.log("reload event");
+        }      
+
+        // maazine system
+        window.onmousedown = () => { 
+            this.magazine.fire();
+        };
+
+        this.magazine.update();
+
         
         const gravity = -9.8;
 
-
         // Update velocity based on acceleration (first line of Euler's method).
         vec3.scaleAndAdd(this.velocity, this.velocity, acc, dt * this.acceleration);
-
 
         // If there is no user input, apply decay.
         if (!this.keys['KeyW'] &&
@@ -139,15 +154,11 @@ export class FirstPersonController {
             vec3.scale(this.velocity, this.velocity, this.maxSpeed / speed);
         }
 
-        var change = vec3.scaleAndAdd(vec3.create(),
-        this.node.translation, this.velocity, dt);
 
-        // if you move and there is no collision with the map change is applied
-        //if (this.node.translation != change && !collision(this.node)) {
-            // Update translation based on velocity (second line of Euler's method).
-            this.node.translation = vec3.scaleAndAdd(vec3.create(),
-                this.node.translation, this.velocity, dt);
-        //}  
+        // Update translation based on velocity (second line of Euler's method).
+        this.node.translation = vec3.scaleAndAdd(vec3.create(),
+            this.node.translation, this.velocity, dt);
+         
 
         if (this.node.translation[1] < 1) {
             this.node.translation = [this.node.translation[0], 1, this.node.translation[2]];

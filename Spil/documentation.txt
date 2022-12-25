@@ -67,3 +67,26 @@ zdej morva narest vse node pa speglat ta gltf file, pa streljanje implementerat 
 
 za kamero je ta collision mal chanlenge ker je lahko vse super ampak ce je zelo vazn kako je kamera obrnjena tak da morva kolision vezat na nek drug node k se bo kamera premikala z njem
 tak da k bos delala to kamero objekt dej se eno skatlo zraven pa jo boma pol vezala na kamero v kodi al pa prek gltf bom se vidu kaj je lazi.
+
+///////////////////////////////////////////////////////////
+
+za camero bomo dal nek kvadrat v velikosti cloveka, ki bo mel seveda ptoperty camera mel bo pa se enga otroka... pistolo.
+
+za metke mamo pa vec verjant implementacije:
+    - lahko nardimo ene 5 node-ov kot metek pa damo neko semi automatic pistolo k ma malenkost delaya za strelat, pa metki se bodo itak hitr premikal in tako nardiva da je lahko max 5 metkov naenkrta v zraku.
+    - lahko vizualizacije sploh nimava in nardiva neko funckijo s parametrom vektorja kot smer v katero si usmerjen in potem vrne s katerim objektom se seka...
+
+    - lahko prvo idejo razsirva in nardiva magazine z 7 metki in mava se reload na pistoli. 
+
+za to prvo idejo mava ze vec al manj vse narjen samo v blenderju je treba meke dodat in nama je najlazi in najhitrej pa se boljsa je se mi zdi.
+
+/////////////////////////////////////////////////////////////
+
+magazine zdej tko deluje
+
+v FirstPersonController je deklariran in notr mas lepo magazine, vsakic se updata in pa ce prtisnes z misko se sprozi metek.
+
+ob fire() dobi metek lokacijo in smer kamor se premika in nastav se mu zaseden flag
+na update pa posodobi vse metke k so zasedeni
+
+se collision manjka aka physics class mal sprement da metke drgac obravnava
