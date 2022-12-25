@@ -27,7 +27,7 @@ I have to figure out how to draw specific objects with GLTF and include physics 
 
 there is another way to include phisycs but those nodes i think you have to create manualy and cannot be imported from blender.
 
-after this is all set wi will know how to build the whole map, we will have first person,
+after this is all set we will know how to build the whole map, we will have first person,
 and collision physics. whats left is some bullet system, very simple AI (for spawn moastly).
 
 those scene.js files are very similar to GLTF so i think its posible to apply phisics on them in a way 
@@ -47,3 +47,23 @@ za ostale node pa bo verjetn poseben Physics class narjen.
 
 pri fiziki so nodi drgac sestavljeni tuki je pa gltf i ne mores kr tko rec kaj je normalTexCoordzato bom node sestavu tko da je node z temi translacijami ipd. 
 pol ma pa se en object parameter kjer ma se dodatne stvari notr k jih za node rabs kokr so camera al pa speed all pa collision borders.
+
+//////////////////////////////////////////////////
+Physics, gltf, controls work
+
+Torej stvar je taka:
+
+mava main kjer se zgodijo tri stvari (zaenkrat)
+
+- najprej preko GLTF naloziva gor vse render objekte ... mapo
+
+- potem mava clas za firstperson conotroler ki nardi camera class za katerga delajo kontrole za premikanje ipd.
+
+- nazadnje je se physics class ki gre cez vse node in za vsakega pogleda najprej ce se lahko premika. ce se lahko gre njega primerjat z vsaki drugim elementom, ki ima
+defineran AABB (min, max). pol pa se par colision funkcij, nakonc zracuna kolk je prevec v objektu in najbljizjo tocko k ne bo vec v njemu in mu da translacijo.
+aka collision dela za vse objekte k majo AABB v gltf filu. kar je super.
+
+zdej morva narest vse node pa speglat ta gltf file, pa streljanje implementerat pa collision uspesneih strelov morva mal drgac implementerat in je vecina narjenga.
+
+za kamero je ta collision mal chanlenge ker je lahko vse super ampak ce je zelo vazn kako je kamera obrnjena tak da morva kolision vezat na nek drug node k se bo kamera premikala z njem
+tak da k bos delala to kamero objekt dej se eno skatlo zraven pa jo boma pol vezala na kamero v kodi al pa prek gltf bom se vidu kaj je lazi.
