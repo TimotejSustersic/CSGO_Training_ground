@@ -12,8 +12,6 @@ export class Physics {
             // Move every node with defined velocity.
             if (node.extraParams) {
                 if (node.extraParams.velocity) {
-
-                    console.log(node)
                     
                     vec3.scaleAndAdd(node.translation, node.translation, node.extraParams.velocity, dt);
                     //node.updateMatrix();
@@ -74,7 +72,7 @@ export class Physics {
 
         // Check if there is collision.
         const isColliding = this.aabbIntersection(aBox, bBox);
-        console.log(isColliding)
+
         if (!isColliding) {
             return;
         }
@@ -110,8 +108,8 @@ export class Physics {
             minDirection = [0, 0, -minDiff];
         }
 
-        vec3.add(a.translation, a.translation, minDirection);
-        a.updateMatrix();
+        vec3.add(a._translation, a._translation, minDirection);
+        //a.updateMatrix();
     }
 
 }

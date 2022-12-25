@@ -4,7 +4,6 @@ import { GLTFLoader } from './GLTF/GLTFLoader.js';
 import { Renderer } from './Renderer.js';
 import { FirstPersonController } from './GameClasses/FirstPersonController.js';
 import { Physics } from './GameClasses/Physics.js';
-import { Camera } from './GameClasses/Camera.js';
 
 class App extends Application {
 
