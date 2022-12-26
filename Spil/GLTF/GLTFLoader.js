@@ -10,6 +10,8 @@ import { OrthographicCamera } from './OrthographicCamera.js';
 import { Scene } from './Scene.js';
 
 import { Node } from '../../common/engine/Node.js';
+import { Bullet } from '../GameClasses/Bullet.js';
+import { Target } from '../GameClasses/Target.js';
 
 // This class loads all GLTF resources and instantiates
 // the corresponding classes. Keep in mind that it loads
@@ -328,11 +330,26 @@ export class GLTFLoader {
         if (gltfSpec.velocity !== undefined) {
             options.extraParams.velocity = gltfSpec.velocity;
         }
+
+        let node;
+        
         if (gltfSpec.type !== undefined) {
-            options.extraParams.type = gltfSpec.type;
+        switch (gltfSpec.type) {
+            case "bullet":
+                node = new Bullet(options);
+                break;
+            case "target":
+                node = new Target(options);
+                break;
+            default:
+                node = new Node(options);
+                break;
+        }
+        }
+        else {
+            node = new Node(options);
         }
 
-        const node = new Node(options);
         this.cache.set(gltfSpec, node);
         return node;
     }
