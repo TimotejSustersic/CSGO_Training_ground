@@ -80,7 +80,7 @@ za metke mamo pa vec verjant implementacije:
 
 za to prvo idejo mava ze vec al manj vse narjen samo v blenderju je treba meke dodat in nama je najlazi in najhitrej pa se boljsa je se mi zdi.
 
-/////////////////////////////////////////////////////////////
+//// --- Magazine/bullets --- /////////////////////////////////////////
 
 magazine zdej tko deluje
 
@@ -90,3 +90,21 @@ ob fire() dobi metek lokacijo in smer kamor se premika in nastav se mu zaseden f
 na update pa posodobi vse metke k so zasedeni
 
 se collision manjka aka physics class mal sprement da metke drgac obravnava
+
+//// --- GLTF --- /////////////////////////////////////////////////////
+
+torej gltf je narjen tako da samo en file lahko nalozis naenkrat (ime je poljubno). Najin program ga sharani kot scene. magar si kaksen console.log(this.scene) nared da bos vidla kako je sestavljen.
+ta scene vsebuje node oz vse stene, camero, ... oz tiste stavi k jih v blenderju vidis zgori desno (tista hierarhija, k zgleda k en file system). k bos ti nardila to blender sceno jo mors exportat
+kot .gltf file. in ko expotas mors par stvari tam oznact magar si poglej video kako je to asistent naredu ampak za naju je se neki pomemben. ker mava collision s stenami itd morva vsaki steni 
+dat min pa max oz AABB da lahko v kodi preberem kolk je velka ta stena ker ma node primarno samo translacijo pa scalo kar je vec al manj samo pozicija objekta. Da ne rabva rocno ta min pa max
+delat sem se mal igrov in ugotovu da ce oznacis klukco na "custom properties" flag potem ti blender v gltf file pod bufferje vrze tud te vrednosti (odpri ga pa mal poglej). Probelm je edin
+ker nisem najdu da bi te buferji mel kaksen ID da bi jih unikatno vezu na najine objekte tak da zaenkrat (in verjetn tud stalno) bova mogla ta min pa max koperat za vsak node zraven v njegov objekt
+(tko k sm naredu v najinem filu). vem da je to kurac sploh k bo verjetn kr velik objektov ampak nisem najdu druge. Za tiste objekte k to nardis tam bos mel collision. 
+
+
+//// --- camera --- ////////////////////////////////////////////////////
+
+stvar je zajebana. Camera je node na katero je vezana camera. to je vse kul. Ampak ce hocem  delat collision ji dam min max in je vse kul. (testeru sem zato vem) Recmo da ji damo pol metra sirino
+pa 2 metra visino... vse kul. Zdej pa pogledas gor in se objekt obrne. Zdej mas pa 2 metra sirine in pol metra visine (za collision) in namest ob steni te odrine en meter stran od nje. 
+Zdej razlog da sem ji sploh dal visino ker sem hotu skocit cez oviro. Lahko nardiva tko da ne mors na nic skocit/preskocit in ji dava samo collision pol metra v vse smeri in je job done.
+To lahko nakonc resujeva naceloma.
