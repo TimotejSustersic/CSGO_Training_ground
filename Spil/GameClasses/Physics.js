@@ -1,4 +1,6 @@
 import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
+import { Bullet }  from './Magazine';
+import { Target }  from './Target';
 
 export class Physics {
 
@@ -9,20 +11,26 @@ export class Physics {
     update(dt) {
         
         // obect collision
-        this.scene.traverse(node => {
+        this.scene.traverse(node => {            
             
-            // Move every node with defined velocity.
             if (node.extraParams) {
-                if (node.extraParams.velocity) {
+                if (node instanceof Bullet) {
                     
-                    //vec3.scaleAndAdd(node._translation, node._translation, node.extraParams.velocity, dt);
-                    //node.updateMatrix();
-
-                    // After moving, check for collision with every other node.
+                    // Check for collision with every other node.
+                    this.scene.traverse(other => {
+                        if (other instanceof Target)
+                            this.resolveBulletCollision(node, other);
+                    });
+                }
+                else if (node.extraParams.velocity) { // Move every node with defined velocity.
+                    
+                    // Check for collision with every other node.
                     this.scene.traverse(other => {
                         if (node !== other 
+                            && other.extraParams
                             && node.extraParams.min !== undefined && node.extraParams.max !== undefined 
-                            && other.extraParams.min !== undefined && other.extraParams.max !== undefined) {
+                            && other.extraParams.min !== undefined && other.extraParams.max !== undefined
+                            ) {
                             this.resolveCollision(node, other);
                         }
                     });
@@ -112,6 +120,22 @@ export class Physics {
 
         vec3.add(a._translation, a._translation, minDirection);
         //a.updateMatrix();
+    } 
+    
+    resolveBulletCollision(bullet, target) {
+        // Get global space AABBs.
+        const aBox = this.getTransformedAABB(bullet);
+        const bBox = this.getTransformedAABB(target);
+
+        // Check if there is collision.
+        const isColliding = this.aabbIntersection(aBox, bBox);
+
+        if (!isColliding) {
+            return;
+        }
+
+        bullet.reset();
+        target.hit(bullet);
     }
 
 }

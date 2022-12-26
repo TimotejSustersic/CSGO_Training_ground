@@ -1,6 +1,7 @@
+import { Node } from '../../common/engine/Node.js';
 import { quat, vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
-class Bullet {
+class Bullet extends Node {
 
     constructor(node) {
 
@@ -26,12 +27,17 @@ class Bullet {
         // verjeten => set translation vec3.add(translation, direction * velocity)
     }
 
-    set direcion(direction) {
+    set direction(direction) {
         this._direction = direction;
     }
 
     set location(location) {
         this.bullet.translation(location);
+    }
+
+    reset() {
+        this.free(true);
+        this.location(this.defaultPosition);
     }
 
     /**
@@ -55,8 +61,8 @@ export class Magazine {
         
         // get bullets
         this.scene.traverse(node => {
-            if (node.extraParams && node.extraParams.bullet) {                
-                this.bullets.push(new Bullet(node)); 
+            if (node.extraParams && node.extraParams.type == "bullet") {                
+                this._bullets.push(new Bullet(node)); 
             }
         });
     }
@@ -65,6 +71,15 @@ export class Magazine {
         for (let bullet of this._bullets) 
             if (!bullet.free)
                 bullet.update();
+    }
+
+    // reload bo delu cez 5 sekund tolk da se vsi metki nekam zabijejo
+    reload() {
+        setTimeout(() => {  
+            for (let bullet of this._bullets)  {
+                bullet.reset();
+            }
+        }, 5000);
     }
 
     fire(location, direcion) {

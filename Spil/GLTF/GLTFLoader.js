@@ -328,8 +328,8 @@ export class GLTFLoader {
         if (gltfSpec.velocity !== undefined) {
             options.extraParams.velocity = gltfSpec.velocity;
         }
-        if (gltfSpec.bullet !== undefined) {
-            options.extraParams.bullet = gltfSpec.bullet;
+        if (gltfSpec.type !== undefined) {
+            options.extraParams.type = gltfSpec.type;
         }
 
         const node = new Node(options);

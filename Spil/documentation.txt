@@ -89,7 +89,10 @@ v FirstPersonController je deklariran in notr mas lepo magazine, vsakic se updat
 ob fire() dobi metek lokacijo in smer kamor se premika in nastav se mu zaseden flag
 na update pa posodobi vse metke k so zasedeni
 
-se collision manjka aka physics class mal sprement da metke drgac obravnava
+pod collision mava mal drgacno collision funkcijo za bullet. ce ma bullet collision z tarco potem se klice metoda hit za oba.
+
+pr bullet reset() ga postav na originalno mesto in da zasedenost na false;
+pr tarci hit(bullet) ga da na primarno mesto isto zasedenost na false in pa poslemo notr se bullet pogledamo njegovo lokacijo da vodmo kje smo ga zadel in potem tocke pristejemo z drugo metodo.
 
 //// --- GLTF --- /////////////////////////////////////////////////////
 
@@ -108,3 +111,14 @@ stvar je zajebana. Camera je node na katero je vezana camera. to je vse kul. Amp
 pa 2 metra visino... vse kul. Zdej pa pogledas gor in se objekt obrne. Zdej mas pa 2 metra sirine in pol metra visine (za collision) in namest ob steni te odrine en meter stran od nje. 
 Zdej razlog da sem ji sploh dal visino ker sem hotu skocit cez oviro. Lahko nardiva tko da ne mors na nic skocit/preskocit in ji dava samo collision pol metra v vse smeri in je job done.
 To lahko nakonc resujeva naceloma.
+
+//// --- tarca --- /////////////////////////////////////////////////////
+
+naceloma je situacija podobna k pri bullet torej ene 15 jih mava pol pa jih random na polju ven meceva, lahko mava neke fiksne pozicije, mava class scoring k skrbi za rezultat in v okviru njega
+so tarce.
+
+
+--------------------------------
+
+mam boljso idejo. zdej mava class scoring in pa magazine k ma notr node shranjene in pol gleda vse node in nardi nove clase za bullet pa target
+names tega lahko midva ze v gltf ko delava node spremeniva tko da nardi te classe target, bullet al pa node ce ni nc od tega in pol ti classi nardijo new node.

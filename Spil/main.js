@@ -4,6 +4,7 @@ import { GLTFLoader } from './GLTF/GLTFLoader.js';
 import { Renderer } from './Renderer.js';
 import { FirstPersonController } from './GameClasses/FirstPersonController.js';
 import { Physics } from './GameClasses/Physics.js';
+import { Scoring } from './GameClasses/Target.js';
 
 class App extends Application {
 
@@ -39,6 +40,8 @@ class App extends Application {
 
         this.physics = new Physics(this.scene);
 
+        this.scoring = new Scoring(this.scene);
+
         // render scene
         this.renderer.prepareScene(this.scene);
     }
@@ -46,6 +49,7 @@ class App extends Application {
     update(time, dt) {
         this.controller.update(dt);
         this.physics.update(dt);
+        this.scoring.update(dt);
     }
 
     render() {
