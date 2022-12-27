@@ -11,10 +11,17 @@
 
     <script type="text/javascript" src="../lib/gl-matrix-min.js"></script>
     <script type="module" src="main.js"></script>
+
 </head>
 <body>
-    <div class="fullscreen no-touch">
+    <div class="fullscreen no-touch hubItem">
         <canvas></canvas>
+
+        <div id="time" class="upRight prevent-select">desno zgori</div>
+        <div id="score" class="upLeft prevent-select">levo zgori</div>
+        <div id="targets" class="bottomLeft prevent-select">levo spodi</div>
+        <div id="magazine" class="botomRight prevent-select"></div>
+        <div id="targetHit" class="topCenter prevent-select">top center</div>
     </div>
     <div class="fullscreen overlay loader-container">
         <div class="loader"></div>

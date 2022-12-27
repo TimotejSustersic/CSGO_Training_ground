@@ -141,9 +141,8 @@ Games functionalities documentation:
     - premikanje metkov
     - MAPO/gltf objekt nujno da lahko zacnema mal testerat
     - tarca: random spawn, collision place
-    - scoring 
-    - counting time 
-    - hub 
+    - scoring
+    - hub (bullets and time work)
 
 !!!!!!!!!!!!!!!!!!!!!
 --------------------------------

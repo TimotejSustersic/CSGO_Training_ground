@@ -13,12 +13,23 @@ export class Magazine {
                 this._bullets.push(node); 
             }
         });
+
+        this.hub = document.getElementById("magazine");
     }
 
+    // updates every free node and takes caro of hub presentation of magazine
     update() {
-        for (let bullet of this._bullets) 
-            if (!bullet.free && bullet.active)
+
+        let freeMagSize = 0;
+
+        for (let bullet of this._bullets) {
+            if (!bullet.free && bullet.active) 
                 bullet.update();
+            else
+                freeMagSize++;
+        }
+
+        this.hub.innerHTML = freeMagSize + " / " + this.bullets.length;
     }
 
     // reload bo delu cez 3 sekunde tolk da se vsi metki nekam zabijejo
