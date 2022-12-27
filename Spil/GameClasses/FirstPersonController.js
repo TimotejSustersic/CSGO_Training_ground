@@ -113,10 +113,10 @@ export class FirstPersonController {
             vec3.add(acc, acc, [0,30,0]);
         }
         if (this.keys['KeyR']) {
-            console.log("reload event");
+            this.magazine.reload();
         }      
 
-        // maazine system
+        // magazine system
         window.onmousedown = () => { 
             this.magazine.fire();
         };

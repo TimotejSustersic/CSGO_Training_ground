@@ -9,6 +9,9 @@ export class Bullet extends Node {
         // if its free to be shot
         this._free = true;
 
+        // whlle fired
+        this._active = false;
+
         // default position to return to after shooting is done
         this.defaultPosition = vec3.clone(this.translation)
 
@@ -36,6 +39,12 @@ export class Bullet extends Node {
 
     reset() {
         this.free(true);
+        this.active(false);
+        this.location(this.defaultPosition);
+    }
+
+    hit() {
+        this.active(false);
         this.location(this.defaultPosition);
     }
 
@@ -48,5 +57,16 @@ export class Bullet extends Node {
 
     get free() {
         return this._free;
+    }
+
+    /**
+     * @param {boolean} status
+     */
+    set active(status) {
+        this._active = status;
+    }
+
+    get active() {
+        return this._active;
     }
 }

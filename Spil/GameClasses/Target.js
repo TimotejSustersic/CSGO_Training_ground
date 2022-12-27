@@ -1,4 +1,4 @@
-import { Node } from "../../common/engine/Node";
+import { Node } from "../../common/engine/Node.js";
 
 // returned message status
 const Status = {
@@ -8,7 +8,7 @@ const Status = {
     pts10: "+ 10"
   };
 
-class Target extends Node {
+export class Target extends Node {
 
     constructor(options) {
         super(options);

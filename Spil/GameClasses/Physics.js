@@ -1,6 +1,6 @@
 import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
-import { Bullet }  from './Magazine';
-import { Target }  from './Target';
+import { Bullet }  from './Bullet.js';
+import { Target }  from './Target.js';
 
 export class Physics {
 
@@ -10,31 +10,33 @@ export class Physics {
 
     update(dt) {
         
-        // obect collision
+        // object collision
         this.scene.traverse(node => {            
             
-            if (node.extraParams) {
-                if (node instanceof Bullet) {
+            // check if this node can have collision
+            if (node.extraParams
+                && node.extraParams.min !== undefined && node.extraParams.max !== undefined                 
+                ) {
+
+                // Check for collision with every other node.
+                this.scene.traverse(other => {  
                     
-                    // Check for collision with every other node.
-                    this.scene.traverse(other => {
-                        if (other instanceof Target)
-                            this.resolveBulletCollision(node, other);
-                    });
-                }
-                else if (node.extraParams.velocity) { // Move every node with defined velocity.
-                    
-                    // Check for collision with every other node.
-                    this.scene.traverse(other => {
-                        if (node !== other 
-                            && other.extraParams
-                            && node.extraParams.min !== undefined && node.extraParams.max !== undefined 
-                            && other.extraParams.min !== undefined && other.extraParams.max !== undefined
-                            ) {
-                            this.resolveCollision(node, other);
+                    // not the same, other has collision
+                    if (node !== other 
+                        && other.extraParams                        
+                        && other.extraParams.min !== undefined && other.extraParams.max !== undefined
+                    ) {
+                        // if bullet and other not camera and other not also a bullet
+                        if (node instanceof Bullet && !node.free && node.active) {
+                            if (!other.camera && !(other instanceof Bullet)) // only if other is wall or target
+                                this.resolveBulletCollision(node, other);                            
                         }
-                    });
-                }
+                        else if (node.extraParams.velocity) { // If node is moving                          
+                        
+                            this.resolveCollision(node, other);                        
+                        }
+                    }
+                });
             }
         });
     }
@@ -122,10 +124,10 @@ export class Physics {
         //a.updateMatrix();
     } 
     
-    resolveBulletCollision(bullet, target) {
+    resolveBulletCollision(bullet, other) {
         // Get global space AABBs.
         const aBox = this.getTransformedAABB(bullet);
-        const bBox = this.getTransformedAABB(target);
+        const bBox = this.getTransformedAABB(other);
 
         // Check if there is collision.
         const isColliding = this.aabbIntersection(aBox, bBox);
@@ -133,9 +135,14 @@ export class Physics {
         if (!isColliding) {
             return;
         }
+        // if there is collision it can be with a wall or target
 
-        bullet.reset();
-        target.hit(bullet);
+        //bullet is always hit, which makes it not active anymore, it still isn't free(because of magazine) and its placed in default spot
+        bullet.hit();
+
+        // if other node was target we have to delete it and change score
+        if (other instanceof Target)
+            other.hit(bullet);
     }
 
 }

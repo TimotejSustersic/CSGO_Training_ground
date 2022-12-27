@@ -1,4 +1,4 @@
-import { Bullet } from "./Bullet";
+import { Bullet } from "./Bullet.js";
 
 export class Magazine {
 
@@ -17,27 +17,28 @@ export class Magazine {
 
     update() {
         for (let bullet of this._bullets) 
-            if (!bullet.free)
+            if (!bullet.free && bullet.active)
                 bullet.update();
     }
 
-    // reload bo delu cez 5 sekund tolk da se vsi metki nekam zabijejo
+    // reload bo delu cez 3 sekunde tolk da se vsi metki nekam zabijejo
     reload() {
         setTimeout(() => {  
             for (let bullet of this._bullets)  {
                 bullet.reset();
             }
-        }, 5000);
+        }, 3000);
     }
 
     fire(location, direcion) {
 
-        let newBullet = this.availableBullet();
+        let newBullet = this.availableBullet;
 
         if (newBullet) {
             newBullet.location(location);
             newBullet.direction(direcion);
             newBullet.free(false);
+            newBullet.active(true);
         }        
     }
 
