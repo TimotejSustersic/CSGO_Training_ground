@@ -152,3 +152,4 @@ names tega lahko midva ze v gltf ko delava node spremeniva tko da nardi te class
 
 --------------------------------
 
+
