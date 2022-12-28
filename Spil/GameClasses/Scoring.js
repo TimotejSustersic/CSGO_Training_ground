@@ -13,8 +13,7 @@ export class Scoring {
                 this._targets.push(node); 
             }
         });
-
-        this.scoreHub = document.getElementById("score");
+        
         this.TargetsHub = document.getElementById("targets");
         this.timeHub = document.getElementById("time");
 
@@ -22,8 +21,6 @@ export class Scoring {
     }
 
     update() {
-
-        this.scoreHub.innerHTML = 0;
 
         let time = performance.now() - this.start;
         let sec = Math.trunc(time/1000);

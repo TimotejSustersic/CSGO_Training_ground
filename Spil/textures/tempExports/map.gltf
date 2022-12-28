@@ -136,7 +136,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 4,
@@ -161,7 +161,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 5,
@@ -186,7 +186,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 6,
@@ -211,7 +211,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 7,
@@ -236,7 +236,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 8,
@@ -261,7 +261,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         },
         {
             "mesh" : 9,
@@ -286,7 +286,7 @@
                 -1,
                 -1
             ],
-            "type": "bullet"
+            "bullet": true
         }
     ],
     "cameras" : [

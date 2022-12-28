@@ -6,6 +6,9 @@ export class Physics {
 
     constructor(scene) {
         this.scene = scene;
+
+        this.hubTopMess = document.getElementById("targetHit");
+        this.hubScore = document.getElementById("score");
     }
 
     update(dt) {
@@ -14,26 +17,21 @@ export class Physics {
         this.scene.traverse(node => {            
             
             // check if this node can have collision
-            if (node.extraParams
-                && node.extraParams.min !== undefined && node.extraParams.max !== undefined                 
-                ) {
+            if (node.extraParams && node.extraParams.min !== undefined && node.extraParams.max !== undefined ) {
 
                 // Check for collision with every other node.
                 this.scene.traverse(other => {  
                     
                     // not the same, other has collision
-                    if (node !== other 
-                        && other.extraParams                        
-                        && other.extraParams.min !== undefined && other.extraParams.max !== undefined
-                    ) {
+                    if (node !== other && other.extraParams && other.extraParams.min !== undefined && other.extraParams.max !== undefined ) {
                         // if bullet and other not camera and other not also a bullet
                         if (node instanceof Bullet && !node.free && node.active) {
                             if (!other.camera && !(other instanceof Bullet)) // only if other is wall or target
                                 this.resolveBulletCollision(node, other);                            
                         }
                         else if (node.extraParams.velocity) { // If node is moving                          
-                        
-                            this.resolveCollision(node, other);                        
+                            if (!(other instanceof Bullet)) // only if other is not bullet
+                                this.resolveCollision(node, other);                        
                         }
                     }
                 });
@@ -143,6 +141,12 @@ export class Physics {
         // if other node was target we have to delete it and change score
         if (other instanceof Target)
             other.hit(bullet);
+
+        // notification
+        this.hubTopMess.innerHTML = " you have hit an object";
+        setTimeout(() => this.hubTopMess.innerHTML = "", 3000);
+
+        this.hubScore.innerHTML = (parseInt(this.hubScore.innerHTML) + 100) + "";
     }
 
 }

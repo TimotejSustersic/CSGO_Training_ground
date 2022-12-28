@@ -151,5 +151,3 @@ mam boljso idejo. zdej mava class scoring in pa magazine k ma notr node shranjen
 names tega lahko midva ze v gltf ko delava node spremeniva tko da nardi te classe target, bullet al pa node ce ni nc od tega in pol ti classi nardijo new node.
 
 --------------------------------
-
-

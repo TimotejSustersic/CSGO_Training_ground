@@ -334,17 +334,17 @@ export class GLTFLoader {
         let node;
         
         if (gltfSpec.type !== undefined) {
-        switch (gltfSpec.type) {
-            case "bullet":
-                node = new Bullet(options);
-                break;
-            case "target":
-                node = new Target(options);
-                break;
-            default:
-                node = new Node(options);
-                break;
-        }
+            switch (gltfSpec.type) {
+                case "bullet":
+                    node = new Bullet(options);
+                    break;
+                case "target":
+                    node = new Target(options);
+                    break;
+                default:
+                    node = new Node(options);
+                    break;
+            }
         }
         else {
             node = new Node(options);

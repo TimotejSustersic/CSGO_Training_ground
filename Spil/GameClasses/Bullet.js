@@ -15,37 +15,75 @@ export class Bullet extends Node {
         // default position to return to after shooting is done
         this.defaultPosition = vec3.clone(this.translation)
 
-        // direction of the bullet once fired
-        this._direction = vec3.fromValues(0, 0, 0);
+        this._yaw;
+        this._pitch;
 
-        this.velocity = this.extraParams.velocity
-            ? this.extraParams.velocity
-            : 200;
+        this.velocity = vec3.create();
+        this.acceleration = 0.1;
+        this.maxSpeed = 0.2;
+        this.speedMultiplier = 0.1;
     }
 
     update() {
-
-        // TODO: bullet move to your direcion with your speed
-        // verjeten => set translation vec3.add(translation, direction * velocity)
+        this.bulletTransformation(null);
     }
 
-    set direction(direction) {
-        this._direction = direction;
+    bulletTransformation(margin) {
+
+        let speedMul = this.speedMultiplier;
+        if (margin != null)
+            speedMul = margin;
+        //bullet direction
+        const acc = vec3.create();
+        const cosZ = Math.cos(this.yaw);
+        const sinX = Math.sin(this.yaw);
+        const sinY = Math.sin(this.pitch);
+        const direction = [-sinX, sinY, -cosZ]; // 1. x(desno), 2. y(gor), 3. z(nazaj)
+        vec3.add(acc, acc, direction);
+
+        // Update velocity based on acceleration (first line of Euler's method).
+        vec3.scaleAndAdd(this.velocity, this.velocity, acc, speedMul * this.acceleration);
+
+                
+        // Limit speed to prevent accelerating to infinity and beyond.
+        const speed = vec3.length(this.velocity);
+        if (speed > this.maxSpeed)
+            vec3.scale(this.velocity, this.velocity, this.maxSpeed / speed);   
+
+        // Update translation based on velocity (second line of Euler's method).
+        this.translation = vec3.scaleAndAdd(vec3.create(),
+        this.translation, this.velocity, speedMul);
+    }
+
+    get yaw() {
+        return this._yaw
+    }
+
+    get pitch() {
+        return this._pitch
+    }
+
+    set yaw(yaw) {
+        this._yaw = yaw;
+    }
+
+    set pitch(pitch) {
+        this._pitch = pitch;
     }
 
     set location(location) {
-        this.translation(location);
+        this.translation = location;
     }
 
     reset() {
-        this.free(true);
-        this.active(false);
-        this.location(this.defaultPosition);
+        this.free = true;
+        this.active = false;
+        this.location = this.defaultPosition;
     }
 
     hit() {
-        this.active(false);
-        this.location(this.defaultPosition);
+        this.active = false;
+        this.location = this.defaultPosition;
     }
 
     /**

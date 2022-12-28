@@ -14,7 +14,8 @@ export class Magazine {
             }
         });
 
-        this.hub = document.getElementById("magazine");
+        this.hubMag = document.getElementById("magazine");
+        this.hubTopMess = document.getElementById("targetHit");
     }
 
     // updates every free node and takes caro of hub presentation of magazine
@@ -25,31 +26,39 @@ export class Magazine {
         for (let bullet of this._bullets) {
             if (!bullet.free && bullet.active) 
                 bullet.update();
-            else
+            else if (bullet.free)
                 freeMagSize++;
         }
 
-        this.hub.innerHTML = freeMagSize + " / " + this.bullets.length;
+        this.hubMag.innerHTML = freeMagSize + " / " + this.bullets.length;
+        if (freeMagSize == 0) 
+            // notification
+            this.hubTopMess.innerHTML = '"R" to reload';
+               
     }
 
     // reload bo delu cez 3 sekunde tolk da se vsi metki nekam zabijejo
     reload() {
+        this.hubTopMess.innerHTML = 'a';     
         setTimeout(() => {  
             for (let bullet of this._bullets)  {
                 bullet.reset();
             }
-        }, 3000);
+        }, 0);//3000);
     }
 
-    fire(location, direcion) {
+    fire(location, yaw, pitch) {
 
         let newBullet = this.availableBullet;
 
         if (newBullet) {
-            newBullet.location(location);
-            newBullet.direction(direcion);
-            newBullet.free(false);
-            newBullet.active(true);
+            newBullet.location = location;
+            newBullet.yaw = yaw;
+            newBullet.pitch = pitch;
+            newBullet.free = false;
+            newBullet.active = true;
+            // so that bullet doesnt start from your face or behind you
+            newBullet.bulletTransformation(2);
         }        
     }
 
@@ -57,7 +66,7 @@ export class Magazine {
     discardBullet(node) {
         for (let bullet of this._bullets) {
             if (bullet == node) {
-                bullet.free(true);
+                bullet.free = true;
 
             }
         }
@@ -76,7 +85,7 @@ export class Magazine {
 
         for (let bullet of this._bullets) {
             if (bullet.free) {
-                bullet.free(false);
+                bullet.free = false;
                 return bullet;
             }                
         }
