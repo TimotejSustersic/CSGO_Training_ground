@@ -82,6 +82,12 @@ export class Physics {
         const aBox = this.getTransformedAABB(a);
         const bBox = this.getTransformedAABB(b);
 
+        // #__#
+        
+        if (a.camera) {
+        aBox.min[1] -= 1;
+        }
+
         // Check if there is collision.
         const isColliding = this.aabbIntersection(aBox, bBox);
 
@@ -122,6 +128,13 @@ export class Physics {
 
         vec3.add(a._translation, a._translation, minDirection);
         //a.updateMatrix();
+
+        if (a.camera) {
+            if (minDirection != 0) {
+                a.extraParams.ground = a.translation[1];
+                //console.log(a.extraParams.ground);
+            }
+        }
     } 
     
     resolveBulletCollision(bullet, other) {

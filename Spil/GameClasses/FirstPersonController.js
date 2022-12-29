@@ -34,13 +34,15 @@ export class FirstPersonController {
         this.acceleration = 20;
 
         // Maximum speed in meters per second.
-        this.maxSpeed = 3;
+        this.maxSpeed = 4;
 
         // Decay as 1 - log percent max speed loss per second.
-        this.decay = 0.9;
+        this.decay = 0.97;
 
         // Pointer sensitivity in radians per pixel.
         this.pointerSensitivity = 0.002;
+
+        this.node.extraParams.ground = 1;
 
         this.initHandlers();
 
@@ -109,8 +111,8 @@ export class FirstPersonController {
         if (this.keys['KeyA']) {
             vec3.sub(acc, acc, right);
         }
-        if (this.keys['Space'] && this.node.translation[1] <= 1.05) {
-            vec3.add(acc, acc, [0,30,0]);
+        if (this.keys['Space'] && this.node.translation[1] <= this.node.extraParams.ground + 0.3) {
+            vec3.add(acc, acc, [0,40,0]);
         }
         if (this.keys['KeyR']) {
             this.magazine.reload();
@@ -156,13 +158,17 @@ export class FirstPersonController {
 
 
         // Update translation based on velocity (second line of Euler's method).
-        this.node.translation = vec3.scaleAndAdd(vec3.create(),
+        const t = vec3.scaleAndAdd(vec3.create(),
             this.node.translation, this.velocity, dt);
-         
 
-        if (this.node.translation[1] < 1) {
-            this.node.translation = [this.node.translation[0], 1, this.node.translation[2]];
-        }        
+        this.node.translation = t[1] < 1 ? [t[0], 1, t[2]] : t;
+        
+        if (this.node.translation[1] == 1) {
+            this.node.extraParams.ground = 1;
+        }
+      
+
+        //console.log(this.node.translation);
 
         // Update rotation based on the Euler angles.
         const rotation = quat.create();
