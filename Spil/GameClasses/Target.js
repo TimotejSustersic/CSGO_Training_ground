@@ -1,4 +1,5 @@
 import { Node } from "../../common/engine/Node.js";
+import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 // returned message status
 const Status = {
@@ -28,10 +29,16 @@ export class Target extends Node {
     set status(value) {
         this._status = value;
     }
+
+    show() {
+        this._free = false;
+        this.translation = [this.translation[0], this.translation[1]+1, this.translation[2]]; 
+    }
     
     hit(node) {
+        this.hitPoints(10);
+        this.translation = [this.translation[0], this.translation[1]-1, this.translation[2]];
         this.free(true);
-        this.hitPoints(this.getValue(node))
     }
 
     getValue(node) {

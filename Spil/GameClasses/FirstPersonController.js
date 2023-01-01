@@ -168,7 +168,7 @@ export class FirstPersonController {
         }
       
 
-        //console.log(this.node.translation);
+        //console.log(this.node.rotation);
 
         // Update rotation based on the Euler angles.
         const rotation = quat.create();

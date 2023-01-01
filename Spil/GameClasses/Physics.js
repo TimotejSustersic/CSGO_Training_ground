@@ -154,8 +154,11 @@ export class Physics {
         bullet.hit();
 
         // if other node was target we have to delete it and change score
-        if (other instanceof Target)
+        if (other instanceof Target) {
             other.hit(bullet);
+            let i = Math.floor(Math.random() * 12);
+            this._targets[i].show();
+        }
     }
 
 }

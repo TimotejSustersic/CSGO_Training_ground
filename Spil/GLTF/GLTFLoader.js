@@ -340,7 +340,6 @@ export class GLTFLoader {
                 break;
             case "target":
                 node = new Target(options);
-                //console.log(node);
                 break;
             default:
                 node = new Node(options);

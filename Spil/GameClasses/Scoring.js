@@ -10,9 +10,11 @@ export class Scoring {
         // get targets
         this.scene.traverse(node => {
             if (node instanceof Target) {                
-                this._targets.push(node); 
+                this._targets.push(node);
             }
         });
+        
+        this._targets[10].show();
 
         this.scoreHub = document.getElementById("score");
         this.TargetsHub = document.getElementById("targets");
