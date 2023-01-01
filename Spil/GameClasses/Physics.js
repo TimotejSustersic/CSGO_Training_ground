@@ -17,13 +17,18 @@ export class Physics {
         this.scene.traverse(node => {            
             
             // check if this node can have collision
-            if (node.extraParams && node.extraParams.min !== undefined && node.extraParams.max !== undefined ) {
+            if (node.extraParams
+                && node.extraParams.min !== undefined && node.extraParams.max !== undefined                 
+                ) {
 
                 // Check for collision with every other node.
                 this.scene.traverse(other => {  
                     
                     // not the same, other has collision
-                    if (node !== other && other.extraParams && other.extraParams.min !== undefined && other.extraParams.max !== undefined ) {
+                    if (node !== other 
+                        && other.extraParams                        
+                        && other.extraParams.min !== undefined && other.extraParams.max !== undefined
+                    ) {
                         // if bullet and other not camera and other not also a bullet
                         if (node instanceof Bullet && !node.free && node.active) {
                             if (!other.camera && !(other instanceof Bullet)) // only if other is wall or target
@@ -80,6 +85,12 @@ export class Physics {
         const aBox = this.getTransformedAABB(a);
         const bBox = this.getTransformedAABB(b);
 
+        // #__#
+        
+        if (a.camera) {
+        aBox.min[1] -= 1;
+        }
+
         // Check if there is collision.
         const isColliding = this.aabbIntersection(aBox, bBox);
 
@@ -120,6 +131,13 @@ export class Physics {
 
         vec3.add(a._translation, a._translation, minDirection);
         //a.updateMatrix();
+
+        if (a.camera) {
+            if (minDirection != 0) {
+                a.extraParams.ground = a.translation[1];
+                //console.log(a.extraParams.ground);
+            }
+        }
     } 
     
     resolveBulletCollision(bullet, other) {
@@ -139,8 +157,11 @@ export class Physics {
         bullet.hit();
 
         // if other node was target we have to delete it and change score
-        if (other instanceof Target)
+        if (other instanceof Target) {
             other.hit(bullet);
+            let i = Math.floor(Math.random() * 12);
+            this._targets[i].show();
+        }
 
         // notification
         this.hubTopMess.innerHTML = " you have hit an object";

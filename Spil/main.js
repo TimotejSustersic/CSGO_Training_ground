@@ -19,7 +19,7 @@ class App extends Application {
         //await this.loader.load('../common/models/rocks/rocks.gltf');
 
         // load set this a default scene scene
-        await this.loader.load('./textures/map/map.gltf');
+        await this.loader.load('./textures/scena/scena3.gltf');
         
         // here we load it back
         this.scene = await this.loader.loadScene(this.loader.defaultScene);

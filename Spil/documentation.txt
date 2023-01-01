@@ -151,3 +151,11 @@ mam boljso idejo. zdej mava class scoring in pa magazine k ma notr node shranjen
 names tega lahko midva ze v gltf ko delava node spremeniva tko da nardi te classe target, bullet al pa node ce ni nc od tega in pol ti classi nardijo new node.
 
 --------------------------------
+
+//// --- MAPA --- /////////////////////////////////////////////////////
+
+mapa je nekak narjena, fizika manka se na zunanjih stenah, tm tut ne bo meu vsak delcek ograjce svoje fizike ampak bo en min in max za celo stran, da je mn za racunat. se vedno je prostor uzuni ampak bo min in max povsod okol, tut po stropu, da nic in nihce ne bo mogu pobegnt :D
+
+zaenkrat je not 12 tarc ki se skrivajo pod mapo oziroma v objektih in bojo mele kr vsaka svojo fiksno pozicijo in jih pol sam premaknes vn (gor) k jih rabs
+
+mislm da asistent ni hotu da je vse iz kockastih stvari, pa sm dala se par rozic notr
