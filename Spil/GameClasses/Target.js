@@ -36,9 +36,9 @@ export class Target extends Node {
     }
     
     hit(node) {
-        this.hitPoints(10);
+        this._hitPoints += 10;
         this.translation = [this.translation[0], this.translation[1]-1, this.translation[2]];
-        this.free(true);
+        this._free = true;
     }
 
     getValue(node) {

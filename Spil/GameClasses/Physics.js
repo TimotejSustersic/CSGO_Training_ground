@@ -1,6 +1,8 @@
 import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
 import { Bullet }  from './Bullet.js';
 import { Target }  from './Target.js';
+import { Scoring } from './Scoring.js';
+import { App, app } from '../main.js';
 
 export class Physics {
 
@@ -160,7 +162,10 @@ export class Physics {
         if (other instanceof Target) {
             other.hit(bullet);
             let i = Math.floor(Math.random() * 12);
-            this._targets[i].show();
+
+            const t = app.scoring.targets;
+            t[i].show();
+            
         }
 
         // notification

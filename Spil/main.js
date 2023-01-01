@@ -6,7 +6,7 @@ import { FirstPersonController } from './GameClasses/FirstPersonController.js';
 import { Physics } from './GameClasses/Physics.js';
 import { Scoring } from './GameClasses/Scoring.js';
 
-class App extends Application {
+export class App extends Application {
 
     async start() {
 
@@ -64,6 +64,6 @@ class App extends Application {
 }
 
 const canvas = document.querySelector('canvas');
-const app = new App(canvas);
+export const app = new App(canvas);
 await app.init();
 document.querySelector('.loader-container').remove();
