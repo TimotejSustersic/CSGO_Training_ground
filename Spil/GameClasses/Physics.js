@@ -135,11 +135,13 @@ export class Physics {
         //a.updateMatrix();
 
         if (a.camera) {
-            if (minDirection != 0) {
+            if (minDirection[1] != 0) {
                 a.extraParams.ground = a.translation[1];
                 //console.log(a.extraParams.ground);
             }
         }
+
+
     } 
     
     resolveBulletCollision(bullet, other) {
