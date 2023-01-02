@@ -4,7 +4,9 @@ body, html {
 }
 
 * {
-    font-family: sans-serif;
+    font-family: Rockwell Extra Bold,Rockwell Bold,monospace;
+    color: rgb(143, 97, 13);
+    font-size: 40px;
 }
 
 .fullscreen {

@@ -138,11 +138,10 @@ Games functionalities documentation:
 
 //// --- TODO --- /////////////////////////////////////////////////////
 
-    - premikanje metkov
-    - MAPO/gltf objekt nujno da lahko zacnema mal testerat
-    - tarca: random spawn, collision place
-    - scoring
-    - hub (bullets and time work)
+    - walls
+    - bugs: 
+        - bullet transform
+        - jump
 
 !!!!!!!!!!!!!!!!!!!!!
 --------------------------------

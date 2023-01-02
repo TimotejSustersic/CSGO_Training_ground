@@ -36,11 +36,11 @@ export class App extends Application {
             throw new Error('Camera node does not contain a camera reference');
         }
 
-        this.controller = new FirstPersonController(this.camera, this.gl.canvas, this.scene);
-
-        this.physics = new Physics(this.scene);
-
         this.scoring = new Scoring(this.scene);
+
+        this.controller = new FirstPersonController(this.camera, this.gl.canvas, this.scene, this.scoring);
+
+        this.physics = new Physics(this.scene, this.scoring);       
 
         // render scene
         this.renderer.prepareScene(this.scene);

@@ -1,8 +1,9 @@
 import { Bullet } from "./Bullet.js";
+import { quat, vec3, mat4 } from '../../lib/gl-matrix-module.js';
 
 export class Magazine {
 
-    constructor(scene) {
+    constructor(scene, scoring) {
         this.scene = scene;
 
         this._bullets = [];
@@ -14,8 +15,8 @@ export class Magazine {
             }
         });
 
-        this.hubMag = document.getElementById("magazine");
-        this.hubTopMess = document.getElementById("targetHit");
+        this.scoring = scoring;
+        this.reloading = false ;
     }
 
     // updates every free node and takes caro of hub presentation of magazine
@@ -30,46 +31,47 @@ export class Magazine {
                 freeMagSize++;
         }
 
-        this.hubMag.innerHTML = freeMagSize + " / " + this.bullets.length;
-        if (freeMagSize == 0) 
-            // notification
-            this.hubTopMess.innerHTML = '"R" to reload';
-               
+        this.scoring.magSize(freeMagSize, this.reloading);               
     }
 
     // reload bo delu cez 3 sekunde tolk da se vsi metki nekam zabijejo
-    reload() {
-        this.hubTopMess.innerHTML = 'a';     
-        setTimeout(() => {  
-            for (let bullet of this._bullets)  {
-                bullet.reset();
-            }
-        }, 0);//3000);
+    reload() { 
+        if (this.magSize < 7 && !this.reloading) {
+            this.scoring.reload()
+            this.reloading = true;
+            setTimeout(() => {  
+                for (let bullet of this._bullets)
+                    bullet.reset();
+                this.reloading = false;
+            }, 3000);
+        }
     }
 
     fire(location, yaw, pitch) {
 
-        let newBullet = this.availableBullet;
+        if (!this.reloading) {
 
-        if (newBullet) {
-            newBullet.location = location;
-            newBullet.yaw = yaw;
-            newBullet.pitch = pitch;
-            newBullet.free = false;
-            newBullet.active = true;
-            // so that bullet doesnt start from your face or behind you
-            newBullet.bulletTransformation(2);
-        }        
+            let newBullet = this.availableBullet;
+
+            if (newBullet) {
+                newBullet.translation = location;
+                newBullet.yaw = yaw;
+                newBullet.pitch = pitch;
+                newBullet.free = false;
+                newBullet.active = true;
+
+                // so that bullet doesnt start from your face or behind you
+                //newBullet.bulletTransformation(1);
+                this.scoring.scoreAddFire();
+            }    
+        }    
     }
 
-    // in case of collision discard bullet by chnging its position outside the map and make it free
+    // in case of collision discard bullet by changing its position outside the map and make it free
     discardBullet(node) {
-        for (let bullet of this._bullets) {
-            if (bullet == node) {
+        for (let bullet of this._bullets) 
+            if (bullet == node) 
                 bullet.free = true;
-
-            }
-        }
     }
 
     get magSize() {

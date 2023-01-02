@@ -1,13 +1,4 @@
 import { Node } from "../../common/engine/Node.js";
-import { vec3, mat4 } from '../../lib/gl-matrix-module.js';
-
-// returned message status
-const Status = {
-    Missed: "- 20 (Missed)",
-    Headshot: "+ 100 (Headshot)",
-    Nutshot: "+ 200 (Nutshot)",
-    pts10: "+ 10"
-  };
 
 export class Target extends Node {
 
@@ -31,20 +22,14 @@ export class Target extends Node {
     }
 
     show() {
-        this._free = false;
+        this.free = false;
         this.translation = [this.translation[0], this.translation[1]+1, this.translation[2]]; 
     }
     
     hit(node) {
         this._hitPoints += 10;
         this.translation = [this.translation[0], this.translation[1]-1, this.translation[2]];
-        this._free = true;
-    }
-
-    getValue(node) {
-        // glede na lokacijo noda in te tarce zracuni kam jo je zadel
-        // if miss this.status = missed;
-        //...
+        this.free = true;
     }
 
     set hitPoints(value) {

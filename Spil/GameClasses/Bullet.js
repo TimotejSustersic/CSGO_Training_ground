@@ -19,8 +19,8 @@ export class Bullet extends Node {
         this._pitch;
 
         this.velocity = vec3.create();
-        this.acceleration = 0.1;
-        this.maxSpeed = 0.2;
+        this.acceleration = 0.8;
+        this.maxSpeed = 0.8;
         this.speedMultiplier = 0.1;
     }
 
@@ -43,7 +43,6 @@ export class Bullet extends Node {
 
         // Update velocity based on acceleration (first line of Euler's method).
         vec3.scaleAndAdd(this.velocity, this.velocity, acc, speedMul * this.acceleration);
-
                 
         // Limit speed to prevent accelerating to infinity and beyond.
         const speed = vec3.length(this.velocity);
@@ -71,19 +70,15 @@ export class Bullet extends Node {
         this._pitch = pitch;
     }
 
-    set location(location) {
-        this.translation = location;
-    }
-
     reset() {
         this.free = true;
         this.active = false;
-        this.location = this.defaultPosition;
+        this.translation = this.defaultPosition;
     }
 
     hit() {
         this.active = false;
-        this.location = this.defaultPosition;
+        this.translation = this.defaultPosition;
     }
 
     /**

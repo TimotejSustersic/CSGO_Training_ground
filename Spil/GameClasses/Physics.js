@@ -6,11 +6,9 @@ import { App, app } from '../main.js';
 
 export class Physics {
 
-    constructor(scene) {
+    constructor(scene, scoring) {
         this.scene = scene;
-
-        this.hubTopMess = document.getElementById("targetHit");
-        this.hubScore = document.getElementById("score");
+        this.scoring = scoring;
     }
 
     update(dt) {
@@ -166,13 +164,10 @@ export class Physics {
             const t = app.scoring.targets;
             t[i].show();
             
-        }
-
-        // notification
-        this.hubTopMess.innerHTML = " you have hit an object";
-        setTimeout(() => this.hubTopMess.innerHTML = "", 3000);
-
-        this.hubScore.innerHTML = (parseInt(this.hubScore.innerHTML) + 100) + "";
+            // notification
+            this.scoring.topCenterMess("Target hit");            
+            this.scoring.scoreAddHit();
+        }        
     }
 
 }

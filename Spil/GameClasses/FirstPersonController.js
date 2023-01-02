@@ -3,14 +3,14 @@ import { Magazine } from './Magazine.js';
 
 export class FirstPersonController {
 
-    constructor(node, domElement, scene) {
+    constructor(node, domElement, scene, scoring) {
         // The node that this controller controls.
         this.node = node;
 
         // get scene
         this.scene = scene;
 
-        this.magazine = new Magazine(scene);
+        this.magazine = new Magazine(scene, scoring);
 
         // The activation DOM element.
         this.domElement = domElement;
@@ -116,9 +116,7 @@ export class FirstPersonController {
         }
         if (this.keys['KeyR']) {
             this.magazine.reload();
-        }      
-
-        
+        }              
         
         const gravity = -9.8;
 
@@ -136,20 +134,16 @@ export class FirstPersonController {
             vec3.scale(this.velocity, this.velocity, decay);
         }
 
-
         // If in the air, add gravity
         if (this.node.translation[1] > 1) {
             vec3.add(this.velocity, this.velocity, [0, gravity*dt, 0]);
         }
-
-
 
         // Limit speed to prevent accelerating to infinity and beyond.
         const speed = vec3.length(this.velocity);
         if (speed > this.maxSpeed) {
             vec3.scale(this.velocity, this.velocity, this.maxSpeed / speed);
         }
-
 
         // Update translation based on velocity (second line of Euler's method).
         const t = vec3.scaleAndAdd(vec3.create(),
@@ -159,10 +153,7 @@ export class FirstPersonController {
         
         if (this.node.translation[1] == 1) {
             this.node.extraParams.ground = 1;
-        }
-      
-
-        //console.log(this.node.rotation);
+        }      
 
         // Update rotation based on the Euler angles.
         const rotation = quat.create();
@@ -170,10 +161,9 @@ export class FirstPersonController {
         quat.rotateX(rotation, rotation, this.pitch);
         this.node.rotation = rotation;
 
+        
         // magazine system
-        window.onmousedown = () => { 
-            this.magazine.fire(vec3.clone(this.node.translation), this.yaw, this.pitch);
-        };
+        window.onmousedown = () => this.magazine.fire(this.node.translation, this.yaw, this.pitch);
 
         this.magazine.update();
     }
