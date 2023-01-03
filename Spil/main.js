@@ -1,10 +1,14 @@
 import { Application } from '../common/engine/Application.js';
+import { mat4 } from '../../../lib/gl-matrix-module.js';
 
 import { GLTFLoader } from './GLTF/GLTFLoader.js';
 import { Renderer } from './Renderer.js';
 import { FirstPersonController } from './GameClasses/FirstPersonController.js';
 import { Physics } from './GameClasses/Physics.js';
 import { Scoring } from './GameClasses/Scoring.js';
+import { OrbitController } from '../common/engine/OrbitController.js';
+import { Node } from '../common/engine/Node.js';
+
 
 export class App extends Application {
 
@@ -26,7 +30,6 @@ export class App extends Application {
 
         // the camera
         this.camera = await this.loader.loadNode('Camera');
-
         // just checks if camera exists
         if (!this.scene || !this.camera) {
             throw new Error('Scene or Camera not present in glTF');
@@ -35,6 +38,13 @@ export class App extends Application {
          if (!this.camera.camera) {
             throw new Error('Camera node does not contain a camera reference');
         }
+
+        //light
+        this.light = new Node();
+        this.light.position = [0, 50, 0];
+        this.light.color = [255, 255, 255];
+        this.light.intensity = 5;
+        this.light.attenuation = [1.0, 0.0, 0.0];
 
         this.scoring = new Scoring(this.scene);
 
@@ -53,7 +63,7 @@ export class App extends Application {
     }
 
     render() {
-        this.renderer.render(this.scene, this.camera);
+        this.renderer.render(this.scene, this.camera, this.light);
     }
 
     resize(width, height) {

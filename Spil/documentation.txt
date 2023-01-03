@@ -158,3 +158,12 @@ mapa je nekak narjena, fizika manka se na zunanjih stenah, tm tut ne bo meu vsak
 zaenkrat je not 12 tarc ki se skrivajo pod mapo oziroma v objektih in bojo mele kr vsaka svojo fiksno pozicijo in jih pol sam premaknes vn (gor) k jih rabs
 
 mislm da asistent ni hotu da je vse iz kockastih stvari, pa sm dala se par rozic notr
+
+//// --- SHADOWS --- ///////////////////////////////////////////////////
+
+torej vzel sem jih iz primera 15 k je un zajc in dejanske sence spreminjas v main(tam ko se light deklarira) in pa v shaderju
+
+v vertex shaderju lahko tko nardis da je kamera fiksna (v komentarjih) ampak ni najbolj zato sem pustu da se premika s tabo
+v fragment shaderju pa tam ko je "lambert" pa "phong" je cist nakonc 0.5(difuze), 50(shinines) in 0.01(specular)
+
+tiste stvari k so crne je fora zarad te luci in mors cist zraven pridit pa mal gor pogledat pol pa pokaze, vem da to je mal kurac ampak so pa sence

@@ -1,4 +1,4 @@
-import { mat4 } from '../lib/gl-matrix-module.js';
+import { vec3, mat4 } from '../lib/gl-matrix-module.js';
 
 import { WebGL } from '../common/engine/WebGL.js';
 
@@ -186,13 +186,27 @@ export class Renderer {
         return vpMatrix;
     }
 
-    render(scene, camera) {
+    render(scene, camera, light) {
         const gl = this.gl;
 
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
         const { program, uniforms } = this.programs.simple;
         gl.useProgram(program);
+        
+        const viewMatrix = camera.globalMatrix;
+        mat4.invert(viewMatrix, viewMatrix);
+        gl.uniformMatrix4fv(uniforms.uViewMatrix, false, viewMatrix);
+        gl.uniformMatrix4fv(uniforms.uProjectionMatrix, false, this.getViewProjectionMatrix(camera));
+        gl.uniform3fv(uniforms.uCameraPosition,
+            mat4.getTranslation(vec3.create(), camera.globalMatrix));
+
+        //light
+        gl.uniform3fv(uniforms.uLight.color,
+            vec3.scale(vec3.create(), light.color, light.intensity / 255));
+        gl.uniform3fv(uniforms.uLight.position,
+           mat4.getTranslation(vec3.create(), light.globalMatrix));
+        gl.uniform3fv(uniforms.uLight.attenuation, light.attenuation);
 
         const mvpMatrix = this.getViewProjectionMatrix(camera);
         for (const node of scene.nodes) {
@@ -209,7 +223,7 @@ export class Renderer {
         mat4.mul(mvpMatrix, mvpMatrix, node.localMatrix);
 
         if (node.mesh) {
-            gl.uniformMatrix4fv(uniforms.uModelViewProjection, false, mvpMatrix);
+            gl.uniformMatrix4fv(uniforms.uModelMatrix, false, mvpMatrix);
             for (const primitive of node.mesh.primitives) {
                 this.renderPrimitive(primitive);
             }
