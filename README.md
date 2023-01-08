@@ -1,1 +1,0 @@
-# CSGO_Training_ground
