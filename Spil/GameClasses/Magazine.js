@@ -55,13 +55,12 @@ export class Magazine {
 
             if (newBullet) {
                 newBullet.translation = location;
-                newBullet.yaw = yaw;
-                newBullet.pitch = pitch;
                 newBullet.free = false;
                 newBullet.active = true;
+                newBullet.setDirection(yaw, pitch)
 
                 // so that bullet doesnt start from your face or behind you
-                //newBullet.bulletTransformation(1);
+                newBullet.bulletTransformation(3);
                 this.scoring.scoreAddFire();
             }    
         }    

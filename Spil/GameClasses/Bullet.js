@@ -12,16 +12,15 @@ export class Bullet extends Node {
         // whlle fired
         this._active = false;
 
+        this._direction;
+
         // default position to return to after shooting is done
         this.defaultPosition = vec3.clone(this.translation)
 
-        this._yaw;
-        this._pitch;
-
         this.velocity = vec3.create();
         this.acceleration = 0.8;
-        this.maxSpeed = 0.8;
-        this.speedMultiplier = 0.1;
+        this.maxSpeed = 0.1;
+        this.speedMultiplier = 0.6;
     }
 
     update() {
@@ -33,13 +32,9 @@ export class Bullet extends Node {
         let speedMul = this.speedMultiplier;
         if (margin != null)
             speedMul = margin;
-        //bullet direction
+
         const acc = vec3.create();
-        const cosZ = Math.cos(this.yaw);
-        const sinX = Math.sin(this.yaw);
-        const sinY = Math.sin(this.pitch);
-        const direction = [-sinX, sinY, -cosZ]; // 1. x(desno), 2. y(gor), 3. z(nazaj)
-        vec3.add(acc, acc, direction);
+        vec3.add(acc, acc, this._direction);
 
         // Update velocity based on acceleration (first line of Euler's method).
         vec3.scaleAndAdd(this.velocity, this.velocity, acc, speedMul * this.acceleration);
@@ -52,6 +47,19 @@ export class Bullet extends Node {
         // Update translation based on velocity (second line of Euler's method).
         this.translation = vec3.scaleAndAdd(vec3.create(),
         this.translation, this.velocity, speedMul);
+    }
+
+    setDirection(yaw, pitch) {
+
+        //bullet direction        
+        const cosZ = Math.cos(yaw);
+        const sinX = Math.sin(yaw);
+        const sinY = Math.sin(pitch);
+        this._direction = [-sinX, sinY, -cosZ]; // 1. x(desno), 2. y(gor), 3. z(nazaj)
+    }
+
+    get direction() {
+        return this._direction;
     }
 
     get yaw() {
@@ -73,12 +81,12 @@ export class Bullet extends Node {
     reset() {
         this.free = true;
         this.active = false;
-        this.translation = this.defaultPosition;
+        this.translation = vec3.clone(this.defaultPosition);
     }
 
     hit() {
         this.active = false;
-        this.translation = this.defaultPosition;
+        this.translation = vec3.clone(this.defaultPosition);
     }
 
     /**
