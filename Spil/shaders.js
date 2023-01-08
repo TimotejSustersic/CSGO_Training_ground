@@ -16,7 +16,8 @@ void main() {
     // vPosition = (uModelMatrix * aPosition).xyz;
     // vPosition = aPosition.xyz;
     vPosition = vec3(-50, -20, -60);
-     vNormal = mat3(uModelMatrix) * aNormal;
+    //vNormal = mat3(uModelMatrix) * aNormal;
+    vNormal = aNormal;
     vTexCoord = aTexCoord;
 
     gl_Position = uModelMatrix * aPosition;
@@ -67,6 +68,7 @@ void main() {
     vec3 albedo = pow(texture(uBaseColorTexture, vTexCoord).rgb, vec3(gamma));
     vec3 finalColor = albedo * diffuseLight + specularLight;
     oColor = uBaseColorFactor * pow(vec4(finalColor, 1), vec4(1.0 / gamma));
+
 
     //vec4 baseColor = texture(uBaseColorTexture, vTexCoord);
     //oColor = uBaseColorFactor * baseColor;
